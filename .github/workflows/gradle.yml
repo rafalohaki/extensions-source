@@ -12,6 +12,10 @@ jobs:
     permissions:
       contents: read
 
+    env:
+      CI_CHUNK_SIZE: 10  # Adjust this value based on your project's requirements
+      CI_CHUNK_NUM: 0    # Adjust this value based on your project's requirements
+
     steps:
     - name: Checkout Code
       uses: actions/checkout@v4
@@ -24,9 +28,6 @@ jobs:
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
-
-    - name: Set Environment Variables
-      run: echo "CI_CHUNK_SIZE=10" >> $GITHUB_ENV
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
