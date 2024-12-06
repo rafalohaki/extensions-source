@@ -1,3 +1,11 @@
+name: Java CI with Gradle
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -16,18 +24,9 @@ jobs:
 
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v4
-      with:
-        gradle-version: '8.9'
 
-    - name: Cache Gradle Dependencies
-      uses: actions/cache@v3
-      with:
-        path: ~/.gradle/caches
-        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-        restore-keys: |
-          ${{ runner.os }}-gradle-
+    - name: Set Environment Variables
+      run: echo "CI_CHUNK_SIZE=10" >> $GITHUB_ENV
 
-    - name: Build Project
-      env:
-        CI_CHUNK_SIZE: "5" # Set an appropriate default value
+    - name: Build with Gradle Wrapper
       run: ./gradlew build
